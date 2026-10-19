@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<nav class="breadcrumb">
+    <a href="/">Home</a> <span>&raquo;</span> <strong>Contact Us</strong>
+</nav>
+
+<div class="content-main page-narrow">
+    <h1 class="page-title">Contact Us</h1>
+
+    @if (ViewBag.Sent == true)
+    {
+        <div class="alert-success">Waad ku mahadsan tahay! Fariintaada waa nala soo gaartay.</div>
+    }
+
+    <form class="contact-form" method="post" action="/Page/Contact">
+        <label>Magacaaga</label>
+        <input type="text" name="name" required />
+        <label>Email-kaaga</label>
+        <input type="email" name="email" required />
+        <label>Fariintaada</label>
+        <textarea name="message" rows="6" required></textarea>
+        <button type="submit" class="btn-primary">Send Message</button>
+    </form>
+</div>

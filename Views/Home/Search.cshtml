@@ -1,0 +1,41 @@
+@model BootNews.Models.SearchViewModel
+@{
+    ViewData["Title"] = "Search";
+}
+
+<nav class="breadcrumb">
+    <a href="/">Home</a> <span>&raquo;</span> <strong>Search</strong>
+</nav>
+
+<div class="content-with-sidebar">
+    <div class="content-main">
+        <h1 class="page-title">Search : @Model.Query</h1>
+
+        @if (string.IsNullOrWhiteSpace(Model.Query))
+        {
+            <p class="empty-msg">Fadlan qor eray aad raadinayso.</p>
+        }
+        else if (!Model.Results.Any())
+        {
+            <p class="empty-msg">Wax natiijo ah lama helin "@Model.Query".</p>
+        }
+
+        @foreach (var a in Model.Results)
+        {
+            <article class="cat-item">
+                <a class="cat-thumb" href="/Article/@a.Id/@a.Slug">
+                    <img src="@a.ImageUrl&w=500" alt="@a.Title" loading="lazy" />
+                </a>
+                <div class="cat-text">
+                    <h3><a href="/Article/@a.Id/@a.Slug">@a.Title</a></h3>
+                    <p class="cat-meta"><a href="#" class="author-link">@a.Author.Name</a> &nbsp;@a.PublishedAt.ToString("MMM dd, yyyy")</p>
+                    <p class="cat-summary">@a.Summary</p>
+                </div>
+            </article>
+        }
+    </div>
+
+    <aside class="content-sidebar">
+        @await Html.PartialAsync("_Sidebar", new BootNews.Models.SidebarData())
+    </aside>
+</div>

@@ -1,0 +1,87 @@
+@model BootNews.Models.ArticleViewModel
+@{
+    var a = Model.Article;
+    ViewData["Title"] = a.Title;
+}
+
+<!-- BREADCRUMB -->
+<nav class="breadcrumb">
+    <a href="/">Home</a> <span>&raquo;</span>
+    <a href="/Category/@a.Category.Slug">@a.Category.Name</a> <span>&raquo;</span>
+    <strong>@a.Title</strong>
+</nav>
+
+<div class="content-with-sidebar">
+    <div class="content-main">
+        <article class="single-article">
+            <h1 class="single-title">@a.Title</h1>
+            <p class="single-meta">
+                by <a href="#" class="author-link">@a.Author.Name</a> &nbsp;
+                <i class="far fa-calendar"></i> @a.PublishedAt.ToString("MMM dd, yyyy") &nbsp;
+                <i class="far fa-comment"></i> @a.CommentCount Comments &nbsp;
+                <i class="far fa-eye"></i> @((a.Views / 1000.0).ToString("0.00"))k view
+            </p>
+
+            <div class="share-buttons">
+                <a class="share-btn fb" href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+                <a class="share-btn tw" href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                <a class="share-btn li" href="#"><i class="fab fa-linkedin-in"></i> Linkedin</a>
+                <a class="share-btn pn" href="#"><i class="fab fa-pinterest-p"></i> Pinterest</a>
+                <a class="share-btn em" href="#"><i class="fas fa-envelope"></i> Email</a>
+            </div>
+
+            <figure class="single-figure">
+                <img src="@a.ImageUrl&w=1200" alt="@a.Title" />
+                <figcaption>Image captions</figcaption>
+            </figure>
+
+            <div class="single-body">
+                @foreach (var (para, idx) in a.Content.Split("\n\n").Select((p, i) => (p, i)))
+                {
+                    if (idx == 0)
+                    {
+                        <p class="dropcap">@para</p>
+                    }
+                    else
+                    {
+                        <p>@para</p>
+                    }
+                }
+            </div>
+
+            @if (Model.Tags.Any())
+            {
+                <div class="tag-pills">
+                    @foreach (var t in Model.Tags)
+                    {
+                        <a class="tag-pill" href="#">@t</a>
+                    }
+                </div>
+            }
+        </article>
+
+        @if (Model.Related.Any())
+        {
+            <div class="section-tabs">
+                <span class="tab active">You Must Read</span>
+            </div>
+            <div class="related-grid">
+                @foreach (var r in Model.Related)
+                {
+                    <article class="news-card">
+                        <img src="@r.ImageUrl&w=500" alt="@r.Title" loading="lazy" />
+                        <div class="card-overlay"></div>
+                        <div class="card-info">
+                            <a class="cat-badge" href="/Category/@r.Category.Slug">@r.Category.Name</a>
+                            <h3 class="card-title"><a href="/Article/@r.Id/@r.Slug">@r.Title</a></h3>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </div>
+
+    <aside class="content-sidebar">
+        @await Html.PartialAsync("_Sidebar", new BootNews.Models.SidebarData { Latest = Model.Latest, Popular = Model.Popular })
+    </aside>
+</div>

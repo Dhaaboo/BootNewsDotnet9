@@ -1,0 +1,48 @@
+@model BootNews.Models.CategoryViewModel
+@{
+    ViewData["Title"] = Model.Category.Name;
+}
+
+<!-- BREADCRUMB -->
+<nav class="breadcrumb">
+    <a href="/">Home</a> <span>&raquo;</span> <a href="#">Category</a> <span>&raquo;</span> <strong>@Model.Category.Name</strong>
+</nav>
+
+<div class="content-with-sidebar">
+    <div class="content-main">
+        <h1 class="page-title">Category : @Model.Category.Name</h1>
+
+        @if (Model.Tags.Any())
+        {
+            <div class="tag-pills">
+                @foreach (var t in Model.Tags)
+                {
+                    <a class="tag-pill" href="#">@t.Name</a>
+                }
+            </div>
+        }
+
+        @if (!Model.Articles.Any())
+        {
+            <p class="empty-msg">Ma jiraan maqaal ku qoran qaybtan.</p>
+        }
+
+        @foreach (var a in Model.Articles)
+        {
+            <article class="cat-item">
+                <a class="cat-thumb" href="/Article/@a.Id/@a.Slug">
+                    <img src="@a.ImageUrl&w=500" alt="@a.Title" loading="lazy" />
+                </a>
+                <div class="cat-text">
+                    <h3><a href="/Article/@a.Id/@a.Slug">@a.Title</a></h3>
+                    <p class="cat-meta"><a href="#" class="author-link">@a.Author.Name</a> &nbsp;@a.PublishedAt.ToString("MMM dd, yyyy")</p>
+                    <p class="cat-summary">@a.Summary</p>
+                </div>
+            </article>
+        }
+    </div>
+
+    <aside class="content-sidebar">
+        @await Html.PartialAsync("_Sidebar", new BootNews.Models.SidebarData { Latest = Model.Latest, Popular = Model.Popular })
+    </aside>
+</div>

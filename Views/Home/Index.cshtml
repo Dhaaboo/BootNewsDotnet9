@@ -1,0 +1,87 @@
+@model BootNews.Models.HomeViewModel
+@{
+    ViewData["Title"] = "Homepage";
+}
+
+<!-- HERO: carousel weyn + 4 card -->
+<section class="hero-grid">
+    <div class="hero" id="heroCarousel">
+        @for (var i = 0; i < Model.Hero.Count; i++)
+        {
+            var a = Model.Hero[i];
+            <article class="hero-slide @(i == 0 ? "active" : "")">
+                <img src="@a.ImageUrl&w=1200" alt="@a.Title" />
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="cat-badge">@a.Category.Name</span>
+                    <h1><a href="/Article/@a.Id/@a.Slug">@a.Title</a></h1>
+                    <p class="hero-byline">by <a href="#">@a.Author.Name</a> &nbsp;@a.PublishedAt.ToString("MMM dd, yyyy")</p>
+                </div>
+            </article>
+        }
+        <div class="hero-dots">
+            @for (var i = 0; i < Model.Hero.Count; i++)
+            {
+                <button class="dot @(i == 0 ? "active" : "")" data-slide="@i" aria-label="Slide @(i + 1)"></button>
+            }
+        </div>
+        <button class="hero-arrow prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+        <button class="hero-arrow next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="hero-cards">
+        @foreach (var a in Model.Grid)
+        {
+            <article class="news-card">
+                <img src="@a.ImageUrl&w=600" alt="@a.Title" loading="lazy" />
+                <div class="card-overlay"></div>
+                <div class="card-info">
+                    <a class="cat-badge" href="/Category/@a.Category.Slug">@a.Category.Name</a>
+                    <h3 class="card-title"><a href="/Article/@a.Id/@a.Slug">@a.Title</a></h3>
+                </div>
+            </article>
+        }
+    </div>
+</section>
+
+<!-- SPORTS + SIDEBAR -->
+<div class="content-with-sidebar">
+    <div class="content-main">
+        <div class="section-tabs">
+            <a class="tab active" href="/Category/sports">Sports</a>
+        </div>
+
+        @if (Model.Sports.Any())
+        {
+            var first = Model.Sports.First();
+            <article class="feature-card">
+                <img src="@first.ImageUrl&w=900" alt="@first.Title" />
+                <div class="card-overlay"></div>
+                <div class="card-info">
+                    <a class="cat-badge" href="/Category/@first.Category.Slug">@first.Category.Name</a>
+                    <h2 class="card-title"><a href="/Article/@first.Id/@first.Slug">@first.Title</a></h2>
+                    <p class="hero-byline">by <a href="#">@first.Author.Name</a> &nbsp;@first.PublishedAt.ToString("MMM dd, yyyy")</p>
+                </div>
+            </article>
+
+            <div class="list-rows">
+                @foreach (var s in Model.Sports.Skip(1))
+                {
+                    <article class="row-item">
+                        <a class="row-thumb" href="/Article/@s.Id/@s.Slug">
+                            <img src="@s.ImageUrl&w=300" alt="@s.Title" loading="lazy" />
+                        </a>
+                        <div class="row-text">
+                            <h4><a href="/Article/@s.Id/@s.Slug">@s.Title</a></h4>
+                            <span class="row-meta">@s.PublishedAt.ToString("MMM dd, yyyy")</span>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </div>
+
+    <aside class="content-sidebar">
+        @await Html.PartialAsync("_Sidebar", new BootNews.Models.SidebarData { Latest = Model.Latest, Popular = Model.Popular })
+    </aside>
+</div>

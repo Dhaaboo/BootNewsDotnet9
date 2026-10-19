@@ -1,0 +1,56 @@
+@model BootNews.Models.SidebarData
+
+<!-- AD BOX -->
+<div class="sidebar-box ad-box">
+    <span class="ad-label">- Advertisement -</span>
+    <div class="ad-300">
+        <strong>BOOTSTRAP NEWS, PORTAL<br />&amp; MAGAZINE TEMPLATE</strong>
+        <span class="ad-cta">PURCHASE NOW</span>
+        <span class="ad-space">ADS SPACE 300 X 250</span>
+    </div>
+</div>
+
+<!-- SOCIAL NETWORK -->
+<div class="sidebar-box">
+    <h4 class="sidebar-title">Social network</h4>
+    <div class="social-grid">
+        <a href="#" class="social-btn fb"><i class="fab fa-facebook-f"></i> Facebook</a>
+        <a href="#" class="social-btn tw"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="#" class="social-btn ig"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="#" class="social-btn yt"><i class="fab fa-youtube"></i> Youtube</a>
+        <a href="#" class="social-btn li"><i class="fab fa-linkedin-in"></i> Linkedin</a>
+        <a href="#" class="social-btn vm"><i class="fab fa-vimeo-v"></i> Vimeo</a>
+        <a href="#" class="social-btn pn"><i class="fab fa-pinterest-p"></i> Pinterest</a>
+        <a href="#" class="social-btn tg"><i class="fab fa-telegram-plane"></i> Telegram</a>
+    </div>
+</div>
+
+<!-- POPULAR POST -->
+<div class="sidebar-box">
+    <h4 class="sidebar-title">Popular Post</h4>
+    @foreach (var p in Model.Popular)
+    {
+        <a class="side-post" href="/Article/@p.Id/@p.Slug">
+            <img src="@p.ImageUrl" alt="@p.Title" loading="lazy" />
+            <div>
+                <h5>@p.Title</h5>
+                <span class="side-meta">@p.PublishedAt.ToString("MMM dd, yyyy")</span>
+            </div>
+        </a>
+    }
+</div>
+
+<!-- LATEST NEWS -->
+<div class="sidebar-box">
+    <h4 class="sidebar-title">Latest news</h4>
+    @foreach (var l in Model.Latest)
+    {
+        <a class="side-post" href="/Article/@l.Id/@l.Slug">
+            <img src="@l.ImageUrl" alt="@l.Title" loading="lazy" />
+            <div>
+                <h5>@l.Title</h5>
+                <span class="side-meta">@l.PublishedAt.ToString("MMM dd, yyyy")</span>
+            </div>
+        </a>
+    }
+</div>
